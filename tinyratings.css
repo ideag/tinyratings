@@ -1,0 +1,76 @@
+.tinyratings-container{
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.tinyratings-container.tinyratings-inline{
+  display: inline-block;
+  margin-bottom: inherit;
+}
+.tinyratings-container.tinyratings-float-left{
+  float:left;
+  clear:both;
+}
+.tinyratings-container.tinyratings-float-right{
+  float:right;
+  clear:both;
+}
+.tinyratings-container.tinyratings-processing {
+  opacity: 0.3;
+}
+
+.tinyratings-button {
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.tinyratings-button.tinyratings-hover,
+.tinyratings-button.tinyratings-active
+ {
+  opacity: 1;
+}
+
+.tinyratings-vote {
+  display: inline-block;
+}
+.tinyratings-result {
+  display: inline-block;
+}
+
+.tinyratings-result {
+  border:1px solid #aaa;
+  padding: 0px 10px;
+  min-width: 30px;
+  text-align: center;
+  font-size: 10px;
+  margin-left: 10px;
+  border-radius: 2px;
+  position: relative;
+}
+
+/* this CS forms the triangles */
+.tinyratings-result:after,
+.tinyratings-result:before {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 100%;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+
+/* this border color controlls the color of the triangle (what looks like the fill of the triangle) */
+.tinyratings-result:after {
+    top: 5px;
+    border-color: transparent #fff transparent transparent ;
+    border-width: 5px;
+}
+
+/* this border color controlls the outside, thin border */
+.tinyratings-result:before {
+    top: 4px;
+    border-color: transparent #aaa transparent transparent;
+    border-width: 6px;
+}
