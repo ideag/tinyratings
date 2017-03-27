@@ -52,9 +52,9 @@ Here is the list of available attributes:
 
 == Screenshots ==
 
-1. SoulButtons in action on Twenty Seventeen theme
-2. Shortcode builder
-3. Settings page
+1. tinyRatings in action on Twenty Seventeen theme
+2. tinyRatings in action on Twenty Seventeen theme
+3. tinyRatings Settings page
 
 == Changelog ==
 
