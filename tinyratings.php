@@ -3,7 +3,7 @@
  * Plugin Name: tinyRatings
  * Plugin URI: http://arunas.co
  * Description: Plain and simple ratings plugin. Rate anything.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: Arūnas Liuiza
  * Author URI: http://arunas.co
  * Text Domain: tinyratings
@@ -28,11 +28,10 @@ class TinyRatings {
 	 * @var array
 	 */
 	public static $options = array(
-		'style' 						=> 'stars', 			// options: like | likedislike | stars.
+		'style' 			=> 'stars', 					// options: like | likedislike | stars | updown.
 		'permissions'  			=> 'any',					// options: guests | users | any.
-		'log'					 			=> array( 'rating_fingerprint' ),
+		'log'				=> array( 'rating_fingerprint' ),
 		'allow_change' 			=> true,
-		'local_fingerprint'	=> true,
 		'structured_data'		=> true,
 	);
 	/**
@@ -60,7 +59,7 @@ class TinyRatings {
 	 */
 	public static $styles = array(
 		 'like'					=> 'TinyRatingsLike',
-		 'likedislike'	=> 'TinyRatingsLikeDislike',
+		 'likedislike'				=> 'TinyRatingsLikeDislike',
 		 'updown'				=> 'TinyRatingsUpDown',
 		 'stars'				=> 'TinyRatingsStars',
 	 );
@@ -292,11 +291,7 @@ class TinyRatings {
 	 */
 	public static function scripts() {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		if ( self::$options['local_fingerprint'] ) {
-			wp_register_script( 'fingerprintjs2', plugins_url( "js/fingerprintjs2/dist/fingerprint2{$suffix}.js", __FILE__ ) );
-		} else {
-			wp_register_script( 'fingerprintjs2', "//cdn.jsdelivr.net/fingerprintjs2/1.5.0/fingerprint2{$sufix}.js" );
-		}
+		wp_register_script( 'fingerprintjs2', plugins_url( "js/fingerprintjs2/dist/fingerprint2{$suffix}.js", __FILE__ ) );
 		wp_register_script( 'tinyratings', plugins_url( 'tinyratings.js', __FILE__ ), array( 'jquery', 'fingerprintjs2' ), false, true );
 		wp_enqueue_script( 'tinyratings' );
 		$data = array(
