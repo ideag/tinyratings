@@ -23,7 +23,6 @@ class TinyRatings {
 		'permissions'  			=> 'any',					// options: guests | users | any.
 		'log'					 			=> array( 'rating_fingerprint' ),
 		'allow_change' 			=> true,
-		'local_fingerprint'	=> true,
 		'structured_data'		=> true,
 		'append_posttype'		=> array( 'post' ),
 		'append_position'		=> 'after',				// options: before | after | none.
@@ -318,11 +317,7 @@ class TinyRatings {
 	 */
 	public static function scripts() {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		if ( self::$options['local_fingerprint'] ) {
-			wp_register_script( 'fingerprintjs2', plugins_url( "js/fingerprintjs2/dist/fingerprint2{$suffix}.js", __FILE__ ) );
-		} else {
-			wp_register_script( 'fingerprintjs2', "//cdn.jsdelivr.net/fingerprintjs2/1.5.0/fingerprint2{$sufix}.js" );
-		}
+		wp_register_script( 'fingerprintjs2', plugins_url( "js/fingerprintjs2/dist/fingerprint2{$suffix}.js", __FILE__ ) );
 		wp_register_script( 'tinyratings', plugins_url( 'tinyratings.js', __FILE__ ), array( 'jquery', 'fingerprintjs2' ), false, true );
 		wp_enqueue_script( 'tinyratings' );
 		$data = array(

@@ -4,7 +4,7 @@ Donate link: https://www.patreon.com/arunas
 Tags: ratings, stars, like, dislike, rate, 5 stars
 Requires at least: 4.6
 Tested up to: 4.7
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -57,6 +57,9 @@ Here is the list of available attributes:
 3. tinyRatings Settings page
 
 == Changelog ==
+
+= 0.1.1 =
+* removing CDN fingerprintjs2 option as per wordpess.org request
 
 = 0.1.0 =
 * first version to be submitted to wordpress.org
