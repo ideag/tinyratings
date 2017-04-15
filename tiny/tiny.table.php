@@ -57,14 +57,17 @@ class TinyTable {
 		}
 		$sql = "SELECT {$fields} FROM `{$this->name}`";
 		if ( $where ) {
-			$sql .= ' WHERE ('.implode( ') AND (', $where ).')';
+			$sql .= ' WHERE (' . implode( ') AND (', $where ) . ')';
 			$sql = $wpdb->prepare( $sql, $where_values );
 		}
 		if ( isset( $args['groupby'] ) ) {
-			$sql .= ' GROUP BY '.implode( ',', $args['groupby'] );
+			$sql .= ' GROUP BY ' . implode( ',', $args['groupby'] );
 		}
 		if ( isset( $args['orderby'] ) ) {
-			$sql .= ' ORDER BY '.implode( ',', $args['orderby'] );
+			$sql .= ' ORDER BY ' . implode( ',', $args['orderby'] );
+		}
+		if ( isset( $args['limit'] ) ) {
+			$sql .= ' LIMIT ' . $args['limit'];
 		}
 		$result = $wpdb->get_results( $sql, ARRAY_A );
 		return $result;

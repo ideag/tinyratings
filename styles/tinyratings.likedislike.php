@@ -18,6 +18,7 @@ class TinyRatingsLikeDislike {
 		add_filter( 'tinyratings_settings', 								array( 'TinyRatingsLikeDislike', 'settings' ) );
 		add_filter( 'tinyratings_buttons_likedislike', 			array( 'TinyRatingsLikeDislike', 'buttons' ) );
 		add_filter( 'tinyratings_result_likedislike', 			array( 'TinyRatingsLikeDislike', 'result' ), 10, 3 );
+		add_filter( 'tinyratings_top_atts_likedislike', 		array( 'TinyRatingsLikeDislike', 'top_atts' ), 10, 3 );
 		add_filter( 'tinyratings_duplicate_likedislike', 		array( 'TinyRatingsLikeDislike', 'duplicate' ), 10, 4 );
 	}
 	/**
@@ -58,7 +59,8 @@ class TinyRatingsLikeDislike {
 	 * @param  int    $object_id   Rated object ID.
 	 * @param  string $object_type Rated object type.
 	 * @return mixed							 Results.
-	 */	public static function result( $result, $object_id, $object_type = 'post' ) {
+	 */
+	public static function result( $result, $object_id, $object_type = 'post' ) {
 		$sum = 0;
 		if ( ! is_array( $result ) ) {
 			$result = array();
@@ -67,6 +69,18 @@ class TinyRatingsLikeDislike {
 			$sum += $row['rating_value'] * $row['count'];
 		}
 		return $sum;
+	}
+	/**
+	 * Modify how top results are decided
+	 *
+	 * @param  array  $search         Search attributes.
+	 * @param  string $object_type    Rated object type.
+	 * @param  string $object_subtype Rated object subtype.
+	 * @return mixed							    Results.
+	 */
+	public static function top_atts( $search, $object_type, $object_subtype ) {
+		$search['fields']['count'] = 'SUM(`rating_value`) AS `count`';
+		return $search;
 	}
 	/**
 	 * How to handle repeated rating requests

@@ -6,6 +6,7 @@ jQuery(function($){
       var container = jQuery( this );
       var obj = container.data('object-id');
       var obj_type = container.data('object-type');
+      var obj_subtype = container.data('object-subtype');
       var style = container.data('style');
       var uri = tinyratings_data.api_uri+ '/' + obj_type + '/' + obj;
       jQuery.get(
@@ -21,12 +22,16 @@ jQuery(function($){
     });
     jQuery('.tinyratings-button').click(function(){
       var button = jQuery(this);
-      if (  button.parents('.tinyratings-container').hasClass('tinyratings-processing') ) {
+      if ( ! button.parents('.tinyratings-container').hasClass('tinyratings-active') ) {
+        return false;
+      }
+      if ( button.parents('.tinyratings-container').hasClass('tinyratings-processing') ) {
         return false;
       }
       button.parents('.tinyratings-container').addClass('tinyratings-processing');
       var obj = button.parents('.tinyratings-container').data('object-id');
       var obj_type = button.parents('.tinyratings-container').data('object-type');
+      var obj_subtype = button.parents('.tinyratings-container').data('object-subtype');
       var style = button.parents('.tinyratings-container').data('style');
       var rating = button.data('rating');
       // alert( tinyratings_data.api_uri );
@@ -37,6 +42,7 @@ jQuery(function($){
         {
           'rating' : rating,
           'style'  : style,
+          'subtype'  : obj_subtype,
           'fingerprint' : tinyratings_fingerprint,
           '_wpnonce' : tinyratings_data.api_nonce,
         }
@@ -107,7 +113,7 @@ jQuery(function($){
     }
 
   });
-  jQuery('.tinyratings-style-stars .tinyratings-button').hover(function(){
+  jQuery('.tinyratings-style-stars.tinyratings-active .tinyratings-button').hover(function(){
     jQuery( this ).prevAll().addClass( 'tinyratings-hover' );
   },function(){
     jQuery( this ).prevAll().removeClass( 'tinyratings-hover' );

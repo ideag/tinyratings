@@ -20,8 +20,11 @@
 
 .tinyratings-button {
   opacity: 0.5;
-  cursor: pointer;
   transition: opacity 0.3s;
+}
+
+.tinyratings-active .tinyratings-button {
+  cursor: pointer;
 }
 
 .tinyratings-button.tinyratings-hover,

@@ -18,6 +18,7 @@ class TinyRatingsStars {
 		add_filter( 'tinyratings_settings', 					array( 'TinyRatingsStars', 'settings' ) );
 		add_filter( 'tinyratings_buttons_stars', 			array( 'TinyRatingsStars', 'buttons' ) );
 		add_filter( 'tinyratings_result_stars', 			array( 'TinyRatingsStars', 'result' ), 10, 3 );
+		add_filter( 'tinyratings_top_atts_stars', 		array( 'TinyRatingsStars', 'top_atts' ), 10, 3 );
 		add_filter( 'tinyratings_duplicate_stars',		array( 'TinyRatingsStars', 'duplicate' ), 10, 4 );
 		add_filter( 'tinyratings_content_stars',			array( 'TinyRatingsStars', 'schema' ), 10, 2 );
 	}
@@ -96,6 +97,18 @@ class TinyRatingsStars {
 			$result = 0;
 		}
 		return $result;
+	}
+	/**
+	 * Modify how top results are decided
+	 *
+	 * @param  array  $search         Search attributes.
+	 * @param  string $object_type    Rated object type.
+	 * @param  string $object_subtype Rated object subtype.
+	 * @return mixed							    Results.
+	 */
+	public static function top_atts( $search, $object_type, $object_subtype ) {
+		$search['fields']['count'] = 'SUM(`rating_value`) / COUNT( * )  AS `count`';
+		return $search;
 	}
 	/**
 	 * How to handle repeated rating requests

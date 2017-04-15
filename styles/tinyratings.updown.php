@@ -15,10 +15,11 @@ class TinyRatingsUpDown {
 	 * @return void
 	 */
 	public static function init() {
-		add_filter( 'tinyratings_settings', 								array( 'TinyRatingsUpDown', 'settings' ) );
-		add_filter( 'tinyratings_buttons_updown', 			array( 'TinyRatingsUpDown', 'buttons' ) );
+		add_filter( 'tinyratings_settings', 					array( 'TinyRatingsUpDown', 'settings' ) );
+		add_filter( 'tinyratings_buttons_updown', 		array( 'TinyRatingsUpDown', 'buttons' ) );
 		add_filter( 'tinyratings_result_updown', 			array( 'TinyRatingsUpDown', 'result' ), 10, 3 );
-		add_filter( 'tinyratings_duplicate_updown', 		array( 'TinyRatingsUpDown', 'duplicate' ), 10, 4 );
+		add_filter( 'tinyratings_top_atts_updown', 		array( 'TinyRatingsUpDown', 'top_atts' ), 10, 3 );
+		add_filter( 'tinyratings_duplicate_updown', 	array( 'TinyRatingsUpDown', 'duplicate' ), 10, 4 );
 	}
 	/**
 	 * Filter in style-specific settings
@@ -68,6 +69,18 @@ class TinyRatingsUpDown {
 			$sum += $row['rating_value'] * $row['count'];
 		}
 		return $sum;
+	}
+	/**
+	 * Modify how top results are decided
+	 *
+	 * @param  array  $search         Search attributes.
+	 * @param  string $object_type    Rated object type.
+	 * @param  string $object_subtype Rated object subtype.
+	 * @return mixed							    Results.
+	 */
+	public static function top_atts( $search, $object_type, $object_subtype ) {
+		$search['fields']['count'] = 'SUM(`rating_value`) AS `count`';
+		return $search;
 	}
 	/**
 	 * How to handle repeated rating requests

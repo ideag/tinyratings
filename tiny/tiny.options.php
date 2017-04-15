@@ -223,6 +223,12 @@
 				unset( $tag_args['type'] );
 				$value = $this->_get_value( $args['option_id'] );
 				$list = $args['list'];
+				if ( is_callable( array( $this, $list ) ) ) {
+					$list = call_user_func( array( $this, $list ) );
+				}
+				if ( is_callable( $list ) ) {
+					$list = call_user_func( $list );
+				}
 				switch( $type ) {
 					case 'select' :
 						if ( isset( $tag_args['multiple'] ) && $tag_args['multiple'] ) {
