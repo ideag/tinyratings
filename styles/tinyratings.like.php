@@ -73,7 +73,7 @@ class TinyRatingsLike {
 		foreach ( $result as $key => $row ) {
 			$sum += $row['count'];
 		}
-		return $sum;
+		return TinyRatings::format_result( $sum, $sum );
 	}
 	/**
 	 * How to handle repeated rating requests

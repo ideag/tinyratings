@@ -10,7 +10,6 @@
  */
 class TinyRatingsLikeDislike {
 	/**
-	 * Inintialize ratings style.
 	 *
 	 * @return void
 	 */
@@ -62,13 +61,15 @@ class TinyRatingsLikeDislike {
 	 */
 	public static function result( $result, $object_id, $object_type = 'post' ) {
 		$sum = 0;
+		$count = 0;
 		if ( ! is_array( $result ) ) {
 			$result = array();
 		}
 		foreach ( $result as $key => $row ) {
 			$sum += $row['rating_value'] * $row['count'];
+			$count += $row['count'];
 		}
-		return $sum;
+		return TinyRatings::format_result( $sum, $count );
 	}
 	/**
 	 * Modify how top results are decided

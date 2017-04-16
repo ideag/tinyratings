@@ -39,8 +39,12 @@
 .tinyratings-result {
   display: inline-block;
 }
+.tinyratings-result:empty {
+  display: none;
+}
 
 .tinyratings-result {
+  background-color: #fff;
   border:1px solid #aaa;
   padding: 0px 10px;
   min-width: 30px;

@@ -96,7 +96,7 @@ class TinyRatingsStars {
 		} else {
 			$result = 0;
 		}
-		return $result;
+		return TinyRatings::format_result( $result, $count );
 	}
 	/**
 	 * Modify how top results are decided

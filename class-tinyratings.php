@@ -1,13 +1,9 @@
 <?php
 /**
- * Manin plugin class
+ * Main plugin class
  *
  * @package TinyRatings
  */
-
-// [ ] TO DO: widgets.
-// initialize plugin.
-// add_action( 'plugins_loaded', array( 'TinyRatings', 'init' ) );
 
 /**
  * Main plugin class.
@@ -26,6 +22,9 @@ class TinyRatings {
 		'structured_data'		=> true,
 		'append_posttype'		=> array( 'post' ),
 		'append_position'		=> 'after',				// options: before | after | none.
+		'color_base'				=> '',
+		'color_result'			=> '',
+		'show_box'					=> array( 'score' ),	// options: score | count.
 	);
 	/**
 	 * Plugin Settings object.
@@ -83,6 +82,8 @@ class TinyRatings {
 		add_action( 'wp_enqueue_scripts', 		array( 'TinyRatings', 'styles' ) );
 		add_action( 'admin_enqueue_scripts', 	array( 'TinyRatings', 'scripts' ) );
 		add_action( 'admin_enqueue_scripts', 	array( 'TinyRatings', 'styles' ) );
+
+		add_action( 'widgets_init',						array( 'TinyRatings', 'widget' ) );
 
 		add_filter( 'tinyratings_compare_fields', array( 'TinyRatings', 'log' ) );
 
@@ -307,8 +308,36 @@ class TinyRatings {
 	public static function styles() {
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		wp_register_style( 'tinyratings', plugins_url( 'tinyratings.css', __FILE__ ) );
+		$base = self::$options['color_base'];
+		$style = '';
+		if ( '' !== $base ) {
+			$style .= ".tinyratings-button, .tinyratings-result { color: {$base}; }";
+			$style .= PHP_EOL;
+			$style .= ".tinyratings-result { border-color: {$base}; }";
+			$style .= PHP_EOL;
+			$style .= ".tinyratings-result:before { border-right-color: {$base}; }";
+			$style .= PHP_EOL;
+		}
+		$result = self::$options['color_result'];
+		if ( '' !== $result ) {
+			$style .= ".tinyratings-result{ background-color: {$result}; }";
+			$style .= PHP_EOL;
+			$style .= ".tinyratings-result:after{ border-right-color: {$result}; }";
+			$style .= PHP_EOL;
+		}
+		wp_add_inline_style( 'tinyratings', $style );
 		wp_enqueue_style( 'dashicons' );
 		wp_enqueue_style( 'tinyratings' );
+	}
+
+	/**
+	 * Register plugin widget
+	 *
+	 * @return void
+	 */
+	public static function widget() {
+		require_once( self::$plugin_path . 'class-tinyratings-widget.php' );
+		register_widget( 'TinyRatings_Widget' );
 	}
 	/**
 	 * Enqueue plugin scripts.
@@ -439,20 +468,21 @@ class TinyRatings {
 	 */
 	public static function shortcode_top( $atts = array(), $content = '' ) {
 		$defaults = array(
-			'type'		=> 'post',
-			'subtype'	=> false,
-			'style'		=> self::$options['style'],
-			'rating'	=> true,
-			'active'	=> false,
-			'float'		=> false,
-			'limit'   => 5,
+			'type'			=> 'post',
+			'subtype'		=> false,
+			'style'			=> self::$options['style'],
+			'rating'		=> true,
+			'active'		=> false,
+			'float'			=> false,
+			'limit'   	=> 5,
+			'list_type'	=> 'ul',
 		);
 		$atts = wp_parse_args( $atts, $defaults );
 		$return  = '';
 		$results = self::get_top( $atts['style'], $atts['type'], $atts['subtype'], $atts['limit'] );
 		$container_class = array( 'tinyratings-top-container', "tinyratings-top-style-{$atts['style']}" );
 		$container_class = implode( ' ', $container_class );
-		$return .= '<ol>';
+		$return .= "<{$atts['list_type']}>";
 		foreach ( $results as $result ) {
 			$ratings = '';
 			if ( $atts['rating'] ) {
@@ -476,7 +506,7 @@ class TinyRatings {
 			}
 			$return .= "<li><a href='{$href}'>{$title}</a>{$ratings}</li>";
 		}
-		$return .= '</ol>';
+		$return .= "</{$atts['list_type']}>";
 		$return = apply_filters( "tinyratings_top_content_{$atts['style']}", $return, $atts );
 		$return = apply_filters( 'tinyratings__top_content', $return, $atts );
 		$return = '<div class="' . $container_class . '">' . $return . '</div>';
@@ -574,6 +604,38 @@ class TinyRatings {
 		}
 		return $result;
 	}
+	/**
+	 * Format display in ratings result box according to settings
+	 *
+	 * @param  float $score Ratings Score.
+	 * @param  int   $count Ratigns Count.
+	 * @return string       Formatted display.
+	 */
+	public static function format_result( $score, $count ) {
+		if ( ! TinyRatings::$options['show_box'] ) {
+			return '';
+		}
+		if (
+			in_array( 'count', TinyRatings::$options['show_box'], true )
+				&&
+			in_array( 'score', TinyRatings::$options['show_box'], true )
+		) {
+			// translators: rating score / rating count.
+			return sprintf( __( '%1$s / %2$s', 'tinyratings' ), $score, $count );
+		}
+		if (
+			in_array( 'count', TinyRatings::$options['show_box'], true )
+		) {
+			// translators: rating score / rating count.
+			return sprintf( __( '%1$s', 'tinyratings' ), $count );
+		}
+		if (
+			in_array( 'score', TinyRatings::$options['show_box'], true )
+		) {
+			// translators: rating score / rating count.
+			return sprintf( __( '%1$s', 'tinyratings' ), $score );
+		}
+	}
 
 	/**
 	 * Create ratings table
@@ -613,7 +675,11 @@ class TinyRatings {
 				'menu_title'	=> __( 'tinyRatings', 'tinyratings' ),
 				'slug' 				=> 'tinyratings-settings',
 				'option'			=> 'tinyratings_options',
-				'description'	=> __( 'This plugin allows you to simply add ratings to pretty much any piece of content in WordPress. Default usage is to add <code>[tinyrating]</code> shortcode anywhere in post content.', 'tinyratings' ),
+				'description'	=>
+					__( 'This plugin allows you to simply add ratings to pretty much any piece of content in WordPress. Default usage is to add <code>[tinyrating]</code> shortcode anywhere in post content.', 'tinyratings' ) .
+					'<br />' .
+					'<br />' .
+					__( 'If you like this plugin and want to support development of open source WordPress plugins, please consider becoming my patron at <a href="https://www.patreon.com/arunas" target="_blank">Patreon</a>.', 'tinyratings' ),
 			),
 			'sections' => array(
 				'defaults' => array(
@@ -682,6 +748,34 @@ class TinyRatings {
 								'before'	=> __( 'Before Post Content', 	'tinyratings' ),
 								'after'		=> __( 'After Post Content', 		'tinyratings' ),
 								'none'		=> __( '- none -', 							'tinyratings' ),
+							),
+						),
+					),
+				),
+				'colors' => array(
+					'title'				=> __( 'Color Settings	', 'tinyratings' ),
+					'fields'	=> array(
+						'color_base' => array(
+							'title'	=> __( 'Main color', 'tinyratings' ),
+							'attributes' 	=> array(
+								'type' => 'colorpicker',
+							),
+						),
+						'color_result' => array(
+							'title'				=> __( 'Result Background', 'tinyratings' ),
+							'attributes' 	=> array(
+								'type' => 'colorpicker',
+							),
+						),
+						'show_box' => array(
+							'title'				=> __( 'Display in Box', 'tinyratings' ),
+							'callback'		=> 'listfield',
+							'attributes' 	=> array(
+								'type' => 'checkbox',
+							),
+							'list'				=> array(
+								'score'	=> __( 'Ratings Score', 'tinyratings' ),
+								'count'	=> __( 'Ratings Count', 'tinyratings' ),
 							),
 						),
 					),
