@@ -27,6 +27,8 @@ Also, try out my other plugins:
 * [tinyTOC](http://arunas.co/tinytoc) - automatic Table of Contents, based on H1-H6 headings in post content;
 * [tinyIP](http://arunas.co/tinyip) - *Premium* - stop WordPress users from sharing login information, force users to be logged in only from one device at a time;
 
+Banner photo credit: Glen Carrie / Unsplash.com
+
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/tinyratings` directory, or install the plugin through the WordPress plugins screen directly.
