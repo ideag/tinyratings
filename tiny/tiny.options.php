@@ -1,5 +1,5 @@
 <?php
-	// tinyOptions v0.5.0
+	// tinyOptions v0.6.0
 
 	if ( ! class_exists( 'tinyOptions' ) ) {
 		class tinyOptions {

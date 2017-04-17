@@ -9,7 +9,7 @@
  * Plugin Name: tinyRatings
  * Plugin URI: http://arunas.co
  * Description: Plain and simple ratings plugin. Rate anything.
- * Version: 0.1.3
+ * Version: 0.1.4
  * Author: Arūnas Liuiza
  * Author URI: http://arunas.co
  * Text Domain: tinyratings

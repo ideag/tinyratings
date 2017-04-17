@@ -69,9 +69,9 @@ class TinyRatings {
 	public static function init() {
 		self::$plugin_path = plugin_dir_path( __FILE__ );
 
-		// tinyOptions v 0.5.0.
+		// tinyOptions v 0.6.0.
 		self::$options = wp_parse_args( get_option( 'tinyratings_options' ), self::$options );
-		add_action( 'plugins_loaded', array( 'TinyRatings', 'init_options' ), 9999 - 0050 );
+		add_action( 'plugins_loaded', array( 'TinyRatings', 'init_options' ), 9999 - 0060 );
 		add_action( 'init', array( 'TinyRatings', 'init_settings' ), 101 );
 
 		// TinyTable v 0.1.0.
@@ -107,6 +107,9 @@ class TinyRatings {
 	public static function append( $content ) {
 		$post_id = get_the_id();
 		$post_type = get_post_type( $post_id );
+		if ( ! is_array( self::$options['append_posttype'] ) ) {
+			return $content;
+		}
 		if ( ! in_array( $post_type, self::$options['append_posttype'], true ) ) {
 			return $content;
 		}
@@ -166,7 +169,7 @@ class TinyRatings {
 	public static function api_read( $request ) {
 		$args = array(
 			'rating_fingerprint'	=> $request['fingerprint'],
-			'rating_timestamp'		=> current_time( 'mysql' ),
+			'rating_timestamp'		=> current_time( 'timestamp' ),
 			'rating_style'				=> $request['style'],
 			'rating_ip'						=> self::_get_ip(),
 			'object_id' 					=> $request['id'],
@@ -191,7 +194,7 @@ class TinyRatings {
 	public static function api_create( $request ) {
 		$args = array(
 			'rating_fingerprint'	=> $request['fingerprint'],
-			'rating_timestamp'		=> current_time( 'mysql' ),
+			'rating_timestamp'		=> current_time( 'timestamp' ),
 			'rating_value'				=> $request['rating'],
 			'rating_style'				=> $request['style'],
 			'rating_ip'						=> self::_get_ip(),
@@ -486,7 +489,7 @@ class TinyRatings {
 		foreach ( $results as $result ) {
 			$ratings = '';
 			if ( $atts['rating'] ) {
-				$ratings .= do_shortcode( " [tinyrating type='{$atts['type']}' subtype='{$atts['subtype']}' style='{$atts['style']}' id='{$result['object_id']}' inline='true' active='{$atts['active']}' active='{$atts['float']}']" );
+				$ratings .= do_shortcode( " [tinyrating type='{$atts['type']}' subtype='{$atts['subtype']}' style='{$atts['style']}' id='{$result['object_id']}' inline='true' active='{$atts['active']}' float='{$atts['float']}']" );
 			}
 			switch ( $atts['type'] ) {
 				case 'post' :
@@ -647,7 +650,7 @@ class TinyRatings {
 			'tinyratings',
 			array(
 				'rating_id bigint(20) unsigned NOT NULL AUTO_INCREMENT',
-				'rating_timestamp datetime NOT NULL default NOW()',
+				'rating_timestamp timestamp NOT NULL default CURRENT_TIMESTAMP',
 				'rating_value int NOT NULL default "0"',
 				'rating_ip varchar(40) NOT NULL default ""',
 				'rating_style varchar(40) NOT NULL default ""',
