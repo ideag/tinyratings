@@ -279,7 +279,7 @@
 				echo $args['description'] ? "<p class=\"description\">{$args['description']}</p>": '';
 		  }
 			// textarea fields
-			public function textarea( $args ) {
+			public function textarea( $args = array() ) {
 				$defaults = array(
 					'attributes'	=> array(),
 				);

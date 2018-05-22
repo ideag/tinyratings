@@ -92,7 +92,7 @@ jQuery(function($){
 
 jQuery(function($){
   jQuery('.tinyratings-style-stars').bind( 'tinyratings.response', function( e, response, container ){
-    var result = response.current.rating_value;
+    var result = ( null === response.current ? 0 : response.current.rating_value );
     result = Math.round( result * 2 ) / 2;
     container.find('.tinyratings-button span').removeClass('dashicons-star-filled');
     container.find('.tinyratings-button span').removeClass('dashicons-star-half');

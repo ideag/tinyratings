@@ -135,7 +135,7 @@ class TinyRatingsStars {
 			'force_schema' => false,
 		);
 		$atts = wp_parse_args( $atts, $defaults );
-		if ( !TinyRatings::$options['structured_data'] ) {
+		if ( ! TinyRatings::$options['structured_data'] ) {
 			return $return;
 		}
 		if ( ! is_main_query() && ! $atts['force_schema'] ) {
@@ -178,7 +178,9 @@ class TinyRatingsStars {
 		}
 		if ( 'post' === $atts['type'] ) {
 			$schema_data['itemReviewed']['name'] = get_the_title();
+			remove_filter( 'the_content', array( 'TinyRatings', 'append' ), 99 );
 			$schema_data['itemReviewed']['description'] = get_the_excerpt();
+			add_filter( 'the_content', array( 'TinyRatings', 'append' ), 99 );
 			$schema_data['itemReviewed']['url'] = get_the_permalink();
 			$img = get_the_post_thumbnail_url( get_the_id(), 'medium' );
 			if ( $img ) {

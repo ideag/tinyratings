@@ -96,7 +96,7 @@ class TinyRatings {
 
 		add_action( 'init', array( 'TinyRatings', 'init_styles' ), 100 );
 
-		add_filter( 'the_content', array( 'TinyRatings', 'append' ) );
+		add_filter( 'the_content', array( 'TinyRatings', 'append' ), 99 );
 	}
 	/**
 	 * Auto-insert ratings to post content
@@ -115,10 +115,10 @@ class TinyRatings {
 		}
 		switch ( self::$options['append_position'] ) {
 			case 'before' :
-				$content = "[tinyrating]\r\n\r\n{$content}";
+				$content = do_shortcode( '[tinyrating]' ) . PHP_EOL . PHP_EOL . $content;
 			break;
 			case 'after' :
-				$content = "{$content}\r\n\r\n[tinyrating	]";
+				$content = $content . PHP_EOL . PHP_EOL . do_shortcode( '[tinyrating]' );
 			break;
 		}
 		return $content;
@@ -252,7 +252,7 @@ class TinyRatings {
 			'where' => array(),
 		);
 		$compare = array( 'object_id', 'object_type', 'object_subtype', 'rating_style' );
-		$compare = apply_filters( "tinyratings_compare_fields_{$rating_style}", $compare );
+		$compare = apply_filters( "tinyratings_compare_fields_{$args['rating_style']}", $compare );
 		$compare = apply_filters( 'tinyratings_compare_fields', $compare );
 		foreach ( $args as $key => $value ) {
 			if ( ! in_array( $key, $compare, true ) ) {
@@ -407,6 +407,7 @@ class TinyRatings {
 		$return .= '</div>';
 		$return = apply_filters( "tinyratings_content_{$atts['style']}", $return, $atts );
 		$return = apply_filters( 'tinyratings_content', $return, $atts );
+
 		$return = '<div class="' . $container_class . '" data-style="' . $atts['style'] . '" data-object-id="' . $atts['id'] . '" data-object-type="' . $atts['type'] . '" data-object-subtype="' . $atts['subtype'] . '">' . $return . '</div>';
 		return $return;
 	}
