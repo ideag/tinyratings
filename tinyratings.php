@@ -2,14 +2,14 @@
 /**
  * Plain and simple ratings plugin. Rate anything.
  *
- * @since 0.2.0
+ * @since 0.2.1
  * @package TinyRatings
  *
  * @wordpress-plugin
  * Plugin Name: tinyRatings
  * Plugin URI: http://arunas.co
  * Description: Plain and simple ratings plugin. Rate anything.
- * Version: 0.2.0
+ * Version: 0.2.1
  * Author: Arūnas Liuiza
  * Author URI: http://arunas.co
  * Text Domain: tinyratings
