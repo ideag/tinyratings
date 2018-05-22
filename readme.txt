@@ -3,8 +3,8 @@ Contributors: ideag
 Donate link: https://www.patreon.com/arunas
 Tags: ratings, stars, like, dislike, rate, 5 stars
 Requires at least: 4.6
-Tested up to: 4.7
-Stable tag: 0.1.4
+Tested up to: 4.9
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,8 +20,9 @@ If you like my work and want to support development of my open source WordPress 
 
 Also, try out my other plugins:
 
-* [Gust](http://arunas.co/gust) - a Ghost-like admin panel for WordPress, featuring Markdown based split-view editor;
+* [ShortCache](http://wordpress.org/plugins/shortcache) - a plugin that llows user to cache output of any shortcode by adding a `cache` attribute to it.
 * [Content Cards](http://arunas.co/cc) - allows to Embed any link from the web easily as a beautiful Content Card;
+* [Gust](http://arunas.co/gust) - a Ghost-like admin panel for WordPress, featuring Markdown based split-view editor;
 * [tinyCoffee](http://arunas.co/tinycoffee) - A WordPress donate button plugin with a twist - ask your supporters to treat you to a coffee, beer or other beverage of your choice;
 * [tinySocial](http://arunas.co/tinysocial) - a simple way to add social sharing links to Your WordPress posts via shortcodes;
 * [tinyTOC](http://arunas.co/tinytoc) - automatic Table of Contents, based on H1-H6 headings in post content;
@@ -90,6 +91,10 @@ Here is the list of available attributes:
 3. tinyRatings Settings page
 
 == Changelog ==
+
+= 0.2.0 =
+* Fixed exhausted memory bug on star-style ratings with structured data enabled.
+* Fixed various notices.
 
 = 0.1.4 =
 * Small bugfixes
