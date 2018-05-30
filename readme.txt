@@ -1,7 +1,7 @@
 === tinyRatings ===
 Contributors: ideag
 Donate link: https://www.patreon.com/arunas
-Tags: ratings, stars, like, dislike, rate, 5 stars
+Tags: ratings, stars, like, dislike, rate, 5 stars, thumbs up
 Requires at least: 4.6
 Tested up to: 4.9
 Stable tag: 0.2.1
