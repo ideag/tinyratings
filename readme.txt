@@ -92,6 +92,9 @@ Here is the list of available attributes:
 
 == Changelog ==
 
+= 0.2.1 =
+* Working on Deployer intergration.
+
 = 0.2.0 =
 * Fixed exhausted memory bug on star-style ratings with structured data enabled.
 * Fixed various notices.
