@@ -4,7 +4,7 @@ Donate link: https://www.patreon.com/arunas
 Tags: ratings, stars, like, dislike, rate, 5 stars, thumbs up
 Requires at least: 4.6
 Tested up to: 4.9
-Stable tag: 0.2.1
+Stable tag: 0.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ Here is the list of available attributes:
 3. tinyRatings Settings page
 
 == Changelog ==
+
+= 0.2.2 =
+* Further Deployer integration testing.
 
 = 0.2.1 =
 * Working on Deployer intergration.
